@@ -43,7 +43,7 @@ st.markdown("""
     body {
         font-family: 'Poppins', sans-serif;
         background: linear-gradient(135deg, #F5F7FA 0%, #FF6F61 100%);
-        color: #333;
+        color: #1A1A1A;
         overflow-x: hidden;
     }
     .header {
@@ -71,6 +71,7 @@ st.markdown("""
     }
     .metric-card {
         background: white;
+        color: #1A1A1A;
         padding: 20px;
         border-radius: 15px;
         border: 2px solid #26A69A;
@@ -83,7 +84,8 @@ st.markdown("""
         transform: scale(1.05);
     }
     .chart-container {
-        background: rgba(255, 255, 255, 0.9);
+        background: white;
+        color: #1A1A1A;
         padding: 20px;
         border-radius: 15px;
         border: 2px solid #FF6F61;
@@ -120,12 +122,37 @@ st.markdown("""
         transform: translateY(-2px);
         box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
     }
+    .stDataFrame {
+        background: white;
+        color: #1A1A1A;
+        border: 2px solid #FF6F61;
+        border-radius: 10px;
+        padding: 10px;
+    }
+    .stDataFrame table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .stDataFrame th {
+        background: #f0f0f0;
+        color: #1A1A1A;
+        padding: 10px;
+        text-align: left;
+        font-weight: 600;
+    }
+    .stDataFrame td {
+        padding: 10px;
+        color: #1A1A1A;
+    }
+    .stDataFrame tr:nth-child(even) {
+        background: #f9f9f9;
+    }
     .footer {
         text-align: center;
         font-size: 0.9em;
-        color: #7f8c8d;
+        color: #1A1A1A;
         padding: 15px;
-        background: rgba(255, 255, 255, 0.8);
+        background: white;
         border-top: 2px solid #FF6F61;
         border-radius: 10px;
         margin-top: 25px;
@@ -148,6 +175,10 @@ st.markdown("""
         }
         .stButton > button, .stDownloadButton > button {
             padding: 10px 20px;
+        }
+        .stDataFrame th, .stDataFrame td {
+            padding: 8px;
+            font-size: 0.9em;
         }
     }
     </style>
@@ -550,13 +581,13 @@ def main():
         with col1:
             st.subheader("Revenue by Region")
             fig1 = px.bar(filtered_df.groupby('region')['revenue'].sum().reset_index(), x='region', y='revenue', title="Revenue by Region")
-            fig1.update_layout(height=300, paper_bgcolor="white", font_color="#333")
+            fig1.update_layout(height=300, paper_bgcolor="white", font_color="#1A1A1A")
             st.plotly_chart(fig1, use_container_width=True)
         with col2:
             st.subheader("Top 5 Countries")
             top_countries = filtered_df.groupby('country')['revenue'].sum().nlargest(5).reset_index()
             fig2 = px.pie(top_countries, names='country', values='revenue', title="Top 5 Countries")
-            fig2.update_layout(height=300, paper_bgcolor="white", font_color="#333")
+            fig2.update_layout(height=300, paper_bgcolor="white", font_color="#1A1A1A")
             st.plotly_chart(fig2, use_container_width=True)
 
         col1, col2 = st.columns(2)
@@ -564,12 +595,12 @@ def main():
             st.subheader("Sales by Customer Type")
             customer_type_sales = filtered_df.groupby('customer_type')['revenue'].sum().reset_index()
             fig12 = px.pie(customer_type_sales, names='customer_type', values='revenue', title="Sales by Customer Type")
-            fig12.update_layout(height=300, paper_bgcolor="white", font_color="#333")
+            fig12.update_layout(height=300, paper_bgcolor="white", font_color="#1A1A1A")
             st.plotly_chart(fig12, use_container_width=True)
         with col2:
             st.subheader("Profit by Region")
             fig13 = px.bar(filtered_df.groupby('region')['profit_loss'].sum().reset_index(), x='region', y='profit_loss', title="Profit by Region")
-            fig13.update_layout(height=300, paper_bgcolor="white", font_color="#333")
+            fig13.update_layout(height=300, paper_bgcolor="white", font_color="#1A1A1A")
             st.plotly_chart(fig13, use_container_width=True)
 
         col1, col2 = st.columns([2, 1])
@@ -578,7 +609,7 @@ def main():
             conversion_by_region = filtered_df.groupby('region')['converted'].mean().reset_index()
             conversion_by_region['converted'] = conversion_by_region['converted'] * 100
             fig14 = px.bar(conversion_by_region, x='region', y='converted', title="Conversion Rate by Region (%)")
-            fig14.update_layout(height=300, paper_bgcolor="white", font_color="#333")
+            fig14.update_layout(height=300, paper_bgcolor="white", font_color="#1A1A1A")
             st.plotly_chart(fig14, use_container_width=True)
         with col2:
             st.write("")
@@ -590,13 +621,13 @@ def main():
         with col1:
             st.markdown('<div class="metric-card">Avg Revenue: ${:.2f}</div>'.format(filtered_df['revenue'].mean() if not filtered_df.empty else 0), unsafe_allow_html=True)
             fig3 = px.line(filtered_df.groupby(filtered_df['timestamp'].dt.date)['revenue'].sum().reset_index(), x='timestamp', y='revenue', title="Revenue Trend")
-            fig3.update_layout(height=300, paper_bgcolor="white", font_color="#333")
+            fig3.update_layout(height=300, paper_bgcolor="white", font_color="#1A1A1A")
             st.plotly_chart(fig3, use_container_width=True)
         with col2:
             profit_margin = (filtered_df['profit_loss'].sum() / filtered_df['revenue'].sum() * 100) if filtered_df['revenue'].sum() > 0 else 0
             st.markdown('<div class="metric-card">Profit Margin: {:.2f}%</div>'.format(profit_margin), unsafe_allow_html=True)
             fig4 = px.bar(filtered_df.groupby('sales_team_member')['profit_loss'].sum().reset_index(), x='sales_team_member', y='profit_loss', title="Profit by Team")
-            fig4.update_layout(height=300, paper_bgcolor="white", font_color="#333")
+            fig4.update_layout(height=300, paper_bgcolor="white", font_color="#1A1A1A")
             st.plotly_chart(fig4, use_container_width=True)
 
         col1, col2 = st.columns([2, 1])
@@ -604,7 +635,7 @@ def main():
             st.subheader("Revenue Heatmap by Region and Time")
             heatmap_data = filtered_df.groupby([filtered_df['timestamp'].dt.date, 'region'])['revenue'].sum().reset_index()
             fig18 = px.density_heatmap(heatmap_data, x='timestamp', y='region', z='revenue', title="Revenue Heatmap by Region and Time")
-            fig18.update_layout(height=300, paper_bgcolor="white", font_color="#333")
+            fig18.update_layout(height=300, paper_bgcolor="white", font_color="#1A1A1A")
             st.plotly_chart(fig18, use_container_width=True)
         with col2:
             st.write("")
@@ -617,12 +648,12 @@ def main():
             segment_counts = filtered_df['customer_segment'].value_counts().reset_index()
             segment_counts.columns = ['customer_segment', 'count']
             fig5 = px.pie(segment_counts, names='customer_segment', values='count', title="Customer Segments")
-            fig5.update_layout(height=300, paper_bgcolor="white", font_color="#333")
+            fig5.update_layout(height=300, paper_bgcolor="white", font_color="#1A1A1A")
             st.plotly_chart(fig5, use_container_width=True)
         with col2:
             st.markdown('<div class="metric-card">Avg Session: {:.2f}s</div>'.format(filtered_df['session_duration'].mean() if not filtered_df.empty else 0), unsafe_allow_html=True)
             fig6 = px.scatter(filtered_df, x='timestamp', y='session_duration', color='customer_type', title="Session Duration Over Time")
-            fig6.update_layout(height=300, paper_bgcolor="white", font_color="#333")
+            fig6.update_layout(height=300, paper_bgcolor="white", font_color="#1A1A1A")
             st.plotly_chart(fig6, use_container_width=True)
 
         col1, col2 = st.columns([1, 2])
@@ -631,7 +662,7 @@ def main():
         with col2:
             demo_trend = filtered_df.groupby(filtered_df['timestamp'].dt.date)['demo_request_flag'].sum().reset_index()
             fig10 = px.line(demo_trend, x='timestamp', y='demo_request_flag', title="Demo Requests Over Time")
-            fig10.update_layout(height=300, paper_bgcolor="white", font_color="#333")
+            fig10.update_layout(height=300, paper_bgcolor="white", font_color="#1A1A1A")
             st.plotly_chart(fig10, use_container_width=True)
 
         col1, col2 = st.columns([2, 1])
@@ -639,7 +670,7 @@ def main():
             st.subheader("Revenue Trend by Customer Segment")
             revenue_by_segment = filtered_df.groupby([filtered_df['timestamp'].dt.date, 'customer_segment'])['revenue'].sum().reset_index()
             fig15 = px.line(revenue_by_segment, x='timestamp', y='revenue', color='customer_segment', title="Revenue Trend by Customer Segment")
-            fig15.update_layout(height=300, paper_bgcolor="white", font_color="#333")
+            fig15.update_layout(height=300, paper_bgcolor="white", font_color="#1A1A1A")
             st.plotly_chart(fig15, use_container_width=True)
         with col2:
             st.write("")
@@ -648,7 +679,7 @@ def main():
         with col1:
             st.subheader("User Behavior Clusters")
             fig19 = px.scatter(filtered_df, x='session_duration', y='revenue', color='behavior_cluster', title="User Behavior Clusters")
-            fig19.update_layout(height=300, paper_bgcolor="white", font_color="#333")
+            fig19.update_layout(height=300, paper_bgcolor="white", font_color="#1A1A1A")
             st.plotly_chart(fig19, use_container_width=True)
         with col2:
             st.write("")
@@ -662,7 +693,7 @@ def main():
             device_counts = filtered_df['device_type'].value_counts().reset_index()
             device_counts.columns = ['device_type', 'count']
             fig7 = px.bar(device_counts, x='device_type', y='count', title="Device Distribution")
-            fig7.update_layout(height=300, paper_bgcolor="white", font_color="#333")
+            fig7.update_layout(height=300, paper_bgcolor="white", font_color="#1A1A1A")
             st.plotly_chart(fig7, use_container_width=True)
         with col2:
             os_mode = filtered_df['operating_system'].mode()[0] if not filtered_df.empty else "N/A"
@@ -670,14 +701,14 @@ def main():
             os_counts = filtered_df['operating_system'].value_counts().reset_index()
             os_counts.columns = ['operating_system', 'count']
             fig8 = px.pie(os_counts, names='operating_system', values='count', title="OS Distribution")
-            fig8.update_layout(height=300, paper_bgcolor="white", font_color="#333")
+            fig8.update_layout(height=300, paper_bgcolor="white", font_color="#1A1A1A")
             st.plotly_chart(fig8, use_container_width=True)
 
         col1, col2 = st.columns([2, 1])
         with col1:
             st.subheader("Session Duration by Device Type")
             fig16 = px.box(filtered_df, x='device_type', y='session_duration', title="Session Duration by Device Type")
-            fig16.update_layout(height=300, paper_bgcolor="white", font_color="#333")
+            fig16.update_layout(height=300, paper_bgcolor="white", font_color="#1A1A1A")
             st.plotly_chart(fig16, use_container_width=True)
         with col2:
             st.write("")
@@ -690,7 +721,7 @@ def main():
             anomaly_counts = filtered_df['is_anomaly'].value_counts().reset_index()
             anomaly_counts.columns = ['is_anomaly', 'count']
             fig9 = px.bar(anomaly_counts, x='is_anomaly', y='count', title="Anomaly Detection")
-            fig9.update_layout(height=300, paper_bgcolor="white", font_color="#333")
+            fig9.update_layout(height=300, paper_bgcolor="white", font_color="#1A1A1A")
             st.plotly_chart(fig9, use_container_width=True)
         with col2:
             st.write("")
@@ -709,7 +740,7 @@ def main():
             st.subheader("Anomaly Distribution by Region")
             anomaly_by_region = filtered_df.groupby('region')['is_anomaly'].sum().reset_index()
             fig17 = px.bar(anomaly_by_region, x='region', y='is_anomaly', title="Anomaly Distribution by Region")
-            fig17.update_layout(height=300, paper_bgcolor="white", font_color="#333")
+            fig17.update_layout(height=300, paper_bgcolor="white", font_color="#1A1A1A")
             st.plotly_chart(fig17, use_container_width=True)
         with col2:
             st.write("")
