@@ -7,4 +7,4 @@ reportlab==4.4.1
 streamlit-autorefresh==1.0.1
 faker==37.3.0
 pycountry==24.6.1
-pillow==10.4.0
+pillow==9.5.0  # ← Updated to resolve conflict
