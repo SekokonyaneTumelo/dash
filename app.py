@@ -84,12 +84,12 @@ st.markdown("""
         transform: scale(1.05);
     }
     .chart-container {
-        background: white;
-        color: #1A1A1A;
+        background: #000000;
+        color: #FFFFFF;
         padding: 20px;
         border-radius: 15px;
         border: 2px solid #FF6F61;
-        box-shadow: 0 6px 12px rgba(255, 111, 97, 0.2);
+        box-shadow: 0 6px 12px rgba(255, 111, 97, 0.1);
         margin-bottom: 25px;
     }
     .stButton > button {
